@@ -77,7 +77,6 @@
 
     // Function to show alerts
     function showAlert(elementId, message, type) {
-      console.log('Showing alert: ', { elementId, message, type });
       const alert = document.getElementById(elementId);
       alert.textContent = message;
       alert.className = `alert alert-${type}`;
@@ -89,11 +88,9 @@
 
     // Handle registration response from iframe
     window.handleRegistration = function(data) {
-      console.log('Received registration response: ', data);
       if (data.status === 'success') {
         showAlert('registerAlert', data.message || 'Registration successful! Redirecting to login...', 'success');
         setTimeout(() => {
-          console.log('Redirecting to login tab');
           const loginTab = new bootstrap.Tab(document.getElementById('login-tab'));
           loginTab.show();
           document.getElementById('registerForm').reset();
@@ -108,8 +105,6 @@
       const lastName = document.getElementById('lastName').value;
       const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
-
-      console.log('Submitting registration: ', { firstName, lastName, email, password });
 
       // Client-side validation
       if (!email.includes('@') || !email.includes('.')) {
@@ -130,8 +125,6 @@
       try {
         const email = document.getElementById('loginEmail').value;
         const password = document.getElementById('loginPassword').value;
-        console.log('Submitting login: ', { email, password });
-
         // Client-side validation
         if (!email.includes('@') || !email.includes('.')) {
           showAlert('loginAlert', 'Please enter a valid email address', 'danger');
@@ -145,7 +138,6 @@
         window[callbackName] = function(data) {
           delete window[callbackName];
           document.body.removeChild(script);
-          console.log('Received login response: ', data);
           if (data.status === 'success') {
             document.getElementById('welcomeMessage').textContent = `Welcome ${data.firstName}`;
             document.getElementById('authContainer').style.display = 'none';
@@ -165,7 +157,6 @@
     });
 
     function logout() {
-      console.log('Logout triggered');
       document.getElementById('welcomeScreen').style.display = 'none';
       document.getElementById('authContainer').style.display = 'block';
       const loginTab = new bootstrap.Tab(document.getElementById('login-tab'));
