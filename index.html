@@ -70,96 +70,99 @@
   <script>
     const url = 'https://script.google.com/macros/s/AKfycbwLSyJCGRTx_E-geExPOonXWeGkhWO-UIV92y1Ocftn_0xrpOWOi4mxNl6ecxdPhekmhw/exec';
 
-    document.getElementById('registerForm').addEventListener('submit', async (e) => {
-      e.preventDefault(); // Prevent the default form submission
+    document.getElementById('registerForm').addEventListener('submit', async (e) => {
+        e.preventDefault(); // Prevent the default form submission
 
-      const firstName = document.getElementById('firstName').value;
-      const lastName = document.getElementById('lastName').value;
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
+        const firstName = document.getElementById('firstName').value;
+        const lastName = document.getElementById('lastName').value;
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
 
-      // Client-side validation
-      if (!email.includes('@') || !email.includes('.')) {
-        alert('Please enter a valid email address');
-        return;
-      }
-      if (password.length < 4) {
-        alert('Password must be at least 4 characters');
-        return;
-      }
+        // Client-side validation
+        if (!email.includes('@') || !email.includes('.')) {
+            alert('Please enter a valid email address');
+            return;
+        }
+        if (password.length < 4) {
+            alert('Password must be at least 4 characters');
+            return;
+        }
 
-      try {
-        const response = await fetch(url, {
-          method: 'POST',
-          body: new URLSearchParams({
-            action: 'register',
-            firstName: firstName,
-            lastName: lastName,
-            email: email,
-            password: password
-          })
-        });
-        const data = await response.json();
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                body: new URLSearchParams({
+                    action: 'register',
+                    firstName: firstName,
+                    lastName: lastName,
+                    email: email,
+                    password: password
+                })
+            });
 
-        if (data.status === 'success') {
-          alert('Registration done!');
-          // Switch to login tab
-          const loginTab = new bootstrap.Tab(document.getElementById('login-tab'));
-          loginTab.show();
-          document.getElementById('registerForm').reset();
-        } else {
-          alert('Registration error: ' + data.message);
-        }
-      } catch (error) {
-        console.error('Fetch error:', error);
-        alert('An unexpected error occurred. Please try again.');
-      }
-    });
+            // *** CRITICAL CHANGE: Parse the response as text first, then as JSON
+            const data = JSON.parse(await response.text());
 
-    document.getElementById('loginForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      try {
-        const email = document.getElementById('loginEmail').value;
-        const password = document.getElementById('loginPassword').value;
-        // Client-side validation
-        if (!email.includes('@') || !email.includes('.')) {
-          alert('Please enter a valid email address');
-          return;
-        }
-        if (password.length < 4) {
-          alert('Password must be at least 4 characters');
-          return;
-        }
-        const callbackName = 'jsonp_callback_' + Math.round(100000 * Math.random());
-        window[callbackName] = function(data) {
-          delete window[callbackName];
-          document.body.removeChild(script);
-          if (data.status === 'success') {
-            document.getElementById('welcomeMessage').textContent = `Welcome ${data.firstName}`;
-            document.getElementById('authContainer').style.display = 'none';
-            document.getElementById('welcomeScreen').style.display = 'block';
-            document.getElementById('loginForm').reset();
-          } else if (data.status === 'error') {
-            alert(`Server error: ${data.message}`);
-          } else {
-            alert('Invalid credentials');
-          }
-        };
-        const script = document.createElement('script');
-        script.src = `${url}?action=login&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}&callback=${callbackName}`;
-        document.body.appendChild(script);
-      } catch (error) {
-        console.error(error);
-        alert(`Error: ${error.message}. Check console for details.`);
-      }
-    });
+            if (data.status === 'success') {
+                alert('Registration done!');
+                // Switch to login tab
+                const loginTab = new bootstrap.Tab(document.getElementById('login-tab'));
+                loginTab.show();
+                document.getElementById('registerForm').reset();
+            } else {
+                alert('Registration error: ' + data.message);
+            }
+        } catch (error) {
+            console.error('Fetch error:', error);
+            alert('An unexpected error occurred. Please try again.');
+        }
+    });
 
-    function logout() {
-      document.getElementById('welcomeScreen').style.display = 'none';
-      document.getElementById('authContainer').style.display = 'block';
-      const loginTab = new bootstrap.Tab(document.getElementById('login-tab'));
-      loginTab.show();
-    }
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        try {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            // Client-side validation
+            if (!email.includes('@') || !email.includes('.')) {
+                alert('Please enter a valid email address');
+                return;
+            }
+            if (password.length < 4) {
+                alert('Password must be at least 4 characters');
+                return;
+            }
+            const callbackName = 'jsonp_callback_' + Math.round(100000 * Math.random());
+            window[callbackName] = function(data) {
+                delete window[callbackName];
+                document.body.removeChild(script);
+                if (data.status === 'success') {
+                    document.getElementById('welcomeMessage').textContent = `Welcome ${data.firstName}`;
+                    document.getElementById('authContainer').style.display = 'none';
+                    document.getElementById('welcomeScreen').style.display = 'block';
+                    document.getElementById('loginForm').reset();
+                } else if (data.status === 'error') {
+                    alert(`Server error: ${data.message}`);
+                } else {
+                    alert('Invalid credentials');
+                }
+            };
+            const script = document.createElement('script');
+            script.src = `${url}?action=login&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}&callback=${callbackName}`;
+            document.body.appendChild(script);
+        } catch (error) {
+            console.error(error);
+            alert(`Error: ${error.message}. Check console for details.`);
+        }
+    });
+
+    function logout() {
+        document.getElementById('welcomeScreen').style.display = 'none';
+        document.getElementById('authContainer').style.display = 'block';
+        const loginTab = new bootstrap.Tab(document.getElementById('login-tab'));
+        loginTab.show();
+    }
   </script>
 </body>
 </html>
+
