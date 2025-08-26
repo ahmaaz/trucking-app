@@ -120,24 +120,30 @@
       }
 
       try {
-        const callbackName = 'jsonp_callback_' + Math.round(100000 * Math.random());
-        window[callbackName] = function(data) {
-          delete window[callbackName];
-          if (data.status === 'success') {
-            showAlert('registerAlert', data.message || 'Registration successful! Redirecting to login...', 'success');
-            setTimeout(() => {
-              const loginTab = new bootstrap.Tab(document.getElementById('login-tab'));
-              loginTab.show();
-              document.getElementById('registerForm').reset();
-            }, 2000);
-          } else {
-            showAlert('registerAlert', data.message || 'Registration failed', 'danger');
-          }
-        };
-
-        const script = document.createElement('script');
-        script.src = `${url}?action=register&firstName=${encodeURIComponent(firstName)}&lastName=${encodeURIComponent(lastName)}&dateOfBirth=${encodeURIComponent(dateOfBirth)}&mobileNumber=${encodeURIComponent(mobileNumber)}&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}&callback=${callbackName}`;
-        document.body.appendChild(script);
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'register',
+            firstName: firstName,
+            lastName: lastName,
+            dateOfBirth: dateOfBirth,
+            mobileNumber: mobileNumber,
+            email: email,
+            password: password
+          })
+        });
+        const result = await response.json();
+        if (result.status === 'success') {
+          showAlert('registerAlert', result.message || 'Registration successful! Redirecting to login...', 'success');
+          setTimeout(() => {
+            const loginTab = new bootstrap.Tab(document.getElementById('login-tab'));
+            loginTab.show();
+            document.getElementById('registerForm').reset();
+          }, 2000);
+        } else {
+          showAlert('registerAlert', result.message || 'Registration failed', 'danger');
+        }
       } catch (error) {
         showAlert('registerAlert', `Error: ${error.message}. Check console for details.`, 'danger');
       }
@@ -157,24 +163,24 @@
           showAlert('loginAlert', 'Password must be at least 4 characters', 'danger');
           return;
         }
-
-        const callbackName = 'jsonp_callback_' + Math.round(100000 * Math.random());
-        window[callbackName] = function(data) {
-          delete window[callbackName];
-          document.body.removeChild(script);
-          if (data.status === 'success') {
-            document.getElementById('welcomeMessage').textContent = `Welcome ${data.firstName}`;
-            document.getElementById('authContainer').style.display = 'none';
-            document.getElementById('welcomeScreen').style.display = 'block';
-            document.getElementById('loginForm').reset();
-          } else {
-            showAlert('loginAlert', data.message || 'Invalid credentials', 'danger');
-          }
-        };
-
-        const script = document.createElement('script');
-        script.src = `${url}?action=login&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}&callback=${callbackName}`;
-        document.body.appendChild(script);
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'login',
+            email: email,
+            password: password
+          })
+        });
+        const result = await response.json();
+        if (result.status === 'success') {
+          document.getElementById('welcomeMessage').textContent = `Welcome ${result.firstName}`;
+          document.getElementById('authContainer').style.display = 'none';
+          document.getElementById('welcomeScreen').style.display = 'block';
+          document.getElementById('loginForm').reset();
+        } else {
+          showAlert('loginAlert', result.message || 'Invalid credentials', 'danger');
+        }
       } catch (error) {
         showAlert('loginAlert', `Error: ${error.message}. Check console for details.`, 'danger');
       }
