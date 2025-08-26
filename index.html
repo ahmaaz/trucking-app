@@ -141,27 +141,10 @@
           }
         };
 
-        // Use FormData for POST request
-        const formData = new FormData();
-        formData.append('action', 'register');
-        formData.append('firstName', firstName);
-        formData.append('lastName', lastName);
-        formData.append('dateOfBirth', dateOfBirth);
-        formData.append('mobileNumber', mobileNumber);
-        formData.append('email', email);
-        formData.append('password', password);
-
-        // Send POST request with JSONP callback
+        // Use GET request with query string for JSONP
         const script = document.createElement('script');
-        script.src = `${url}?callback=${callbackName}`;
+        script.src = `${url}?action=register&firstName=${encodeURIComponent(firstName)}&lastName=${encodeURIComponent(lastName)}&dateOfBirth=${encodeURIComponent(dateOfBirth)}&mobileNumber=${encodeURIComponent(mobileNumber)}&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}&callback=${callbackName}`;
         document.body.appendChild(script);
-
-        const response = await fetch(url, {
-          method: 'POST',
-          body: formData,
-          mode: 'no-cors' // Use no-cors to avoid CORS issues, but rely on JSONP for response
-        });
-        console.log('Fetch response status: ', response.status);
       } catch (error) {
         console.error('Registration error:', error);
         showAlert('registerAlert', `Error: ${error.message}. Check console for details.`, 'danger');
