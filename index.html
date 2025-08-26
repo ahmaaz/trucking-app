@@ -78,7 +78,7 @@
       loginTab.show();
       window.history.replaceState({}, document.title, window.location.pathname);
     } else if (params.get('status') === 'error') {
-      alert('Registration error: ' + params.get('message'));
+      alert('Registration error: ' + decodeURIComponent(params.get('message')));
       const registerTab = new bootstrap.Tab(document.getElementById('register-tab'));
       registerTab.show();
       window.history.replaceState({}, document.title, window.location.pathname);
@@ -94,7 +94,7 @@
           email: document.getElementById('email').value,
           password: document.getElementById('password').value
         };
-        // Use form to submit JSON via iframe to bypass CORS
+        // Create a form to submit JSON via iframe to bypass CORS
         const form = document.createElement('form');
         form.method = 'POST';
         form.action = url;
