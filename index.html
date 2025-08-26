@@ -12,7 +12,7 @@
     #welcomeScreen { display: none; text-align: center; }
     h1 { text-align: center; margin-bottom: 20px; }
     .alert { margin-bottom: 20px; display: none; }
-    .form-label { font-size: 1.2rem; font-weight: bold; } /* Increased font size and made bold */
+    .form-label { font-size: 1.2rem; font-weight: bold; }
   </style>
 </head>
 <body>
@@ -83,16 +83,14 @@
   <script>
     const url = 'https://script.google.com/macros/s/AKfycbwLSyJCGRTx_E-geExPOonXWeGkhWO-UIV92y1Ocftn_0xrpOWOi4mxNl6ecxdPhekmhw/exec';
 
-    // Function to show alerts
     function showAlert(elementId, message, type) {
-      console.log('Showing alert: ', { elementId, message, type });
       const alert = document.getElementById(elementId);
       alert.textContent = message;
       alert.className = `alert alert-${type}`;
       alert.style.display = 'block';
       setTimeout(() => {
         alert.style.display = 'none';
-      }, 5000); // Hide after 5 seconds
+      }, 5000);
     }
 
     document.getElementById('registerForm').addEventListener('submit', async (e) => {
@@ -104,9 +102,6 @@
       const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
 
-      console.log('Submitting registration: ', { firstName, lastName, dateOfBirth, mobileNumber, email, password });
-
-      // Client-side validation
       if (!email.includes('@') || !email.includes('.')) {
         showAlert('registerAlert', 'Please enter a valid email address', 'danger');
         return;
@@ -125,37 +120,25 @@
       }
 
       try {
-        const data = {
-          action: 'register',
-          firstName: firstName,
-          lastName: lastName,
-          dateOfBirth: dateOfBirth,
-          mobileNumber: mobileNumber,
-          email: email,
-          password: password
+        const callbackName = 'jsonp_callback_' + Math.round(100000 * Math.random());
+        window[callbackName] = function(data) {
+          delete window[callbackName];
+          if (data.status === 'success') {
+            showAlert('registerAlert', data.message || 'Registration successful! Redirecting to login...', 'success');
+            setTimeout(() => {
+              const loginTab = new bootstrap.Tab(document.getElementById('login-tab'));
+              loginTab.show();
+              document.getElementById('registerForm').reset();
+            }, 2000);
+          } else {
+            showAlert('registerAlert', data.message || 'Registration failed', 'danger');
+          }
         };
-        const response = await fetch(url + '?action=register', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          body: new URLSearchParams(data).toString()
-        });
-        const result = await response.json();
-        console.log('Received registration response: ', result);
-        if (result.status === 'success') {
-          showAlert('registerAlert', result.message || 'Registration successful! Redirecting to login...', 'success');
-          setTimeout(() => {
-            console.log('Redirecting to login tab');
-            const loginTab = new bootstrap.Tab(document.getElementById('login-tab'));
-            loginTab.show();
-            document.getElementById('registerForm').reset();
-          }, 2000); // Redirect after 2 seconds
-        } else {
-          showAlert('registerAlert', result.message || 'Registration failed', 'danger');
-        }
+
+        const script = document.createElement('script');
+        script.src = `${url}?action=register&firstName=${encodeURIComponent(firstName)}&lastName=${encodeURIComponent(lastName)}&dateOfBirth=${encodeURIComponent(dateOfBirth)}&mobileNumber=${encodeURIComponent(mobileNumber)}&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}&callback=${callbackName}`;
+        document.body.appendChild(script);
       } catch (error) {
-        console.error('Registration error:', error);
         showAlert('registerAlert', `Error: ${error.message}. Check console for details.`, 'danger');
       }
     });
@@ -165,9 +148,7 @@
       try {
         const email = document.getElementById('loginEmail').value;
         const password = document.getElementById('loginPassword').value;
-        console.log('Submitting login: ', { email, password });
 
-        // Client-side validation
         if (!email.includes('@') || !email.includes('.')) {
           showAlert('loginAlert', 'Please enter a valid email address', 'danger');
           return;
@@ -176,36 +157,30 @@
           showAlert('loginAlert', 'Password must be at least 4 characters', 'danger');
           return;
         }
-        const data = {
-          action: 'login',
-          email: email,
-          password: password
+
+        const callbackName = 'jsonp_callback_' + Math.round(100000 * Math.random());
+        window[callbackName] = function(data) {
+          delete window[callbackName];
+          document.body.removeChild(script);
+          if (data.status === 'success') {
+            document.getElementById('welcomeMessage').textContent = `Welcome ${data.firstName}`;
+            document.getElementById('authContainer').style.display = 'none';
+            document.getElementById('welcomeScreen').style.display = 'block';
+            document.getElementById('loginForm').reset();
+          } else {
+            showAlert('loginAlert', data.message || 'Invalid credentials', 'danger');
+          }
         };
-        const response = await fetch(url + '?action=login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          body: new URLSearchParams(data).toString()
-        });
-        const result = await response.json();
-        console.log('Received login response: ', result);
-        if (result.status === 'success') {
-          document.getElementById('welcomeMessage').textContent = `Welcome ${result.firstName}`;
-          document.getElementById('authContainer').style.display = 'none';
-          document.getElementById('welcomeScreen').style.display = 'block';
-          document.getElementById('loginForm').reset();
-        } else {
-          showAlert('loginAlert', result.message || 'Invalid credentials', 'danger');
-        }
+
+        const script = document.createElement('script');
+        script.src = `${url}?action=login&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}&callback=${callbackName}`;
+        document.body.appendChild(script);
       } catch (error) {
-        console.error('Login error:', error);
         showAlert('loginAlert', `Error: ${error.message}. Check console for details.`, 'danger');
       }
     });
 
     function logout() {
-      console.log('Logout triggered');
       document.getElementById('welcomeScreen').style.display = 'none';
       document.getElementById('authContainer').style.display = 'block';
       const loginTab = new bootstrap.Tab(document.getElementById('login-tab'));
