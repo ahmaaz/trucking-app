@@ -122,19 +122,14 @@ https://script.google.com/macros/s/AKfycbwLSyJCGRTx_E-geExPOonXWeGkhWO-UIV92y1Oc
 
       try {
         const response = await fetch(url, {
-          redirect: "follow",
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify({
-            action: 'register',
-            firstName: firstName,
-            lastName: lastName,
-            dateOfBirth: dateOfBirth,
-            mobileNumber: mobileNumber,
-            email: email,
-            password: password
-          })
-        });
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'login',
+        email: email,
+        password: password
+      })
+    });
         const result = await response.json();
         if (result.status === 'success') {
           showAlert('registerAlert', result.message || 'Registration successful! Redirecting to login...', 'success');
@@ -197,4 +192,5 @@ https://script.google.com/macros/s/AKfycbwLSyJCGRTx_E-geExPOonXWeGkhWO-UIV92y1Oc
   </script>
 </body>
 </html>
+
 
