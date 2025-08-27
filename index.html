@@ -141,10 +141,22 @@
                 const data = new URLSearchParams(formData);
 
                 try {
-                    const response = await fetch(SCRIPT_URL + '?' + data.toString(), {
-                        method: formType === 'register' ? 'POST' : 'GET',
-                        mode: 'cors'
-                    });
+                    let response;
+                    if (formType === 'register') {
+                        // For POST requests (register), send data in the body
+                        response = await fetch(SCRIPT_URL, {
+                            method: 'POST',
+                            body: data, // The key change is here
+                            mode: 'cors'
+                        });
+                    } else {
+                        // For GET requests (login), send data as a query string in the URL
+                        response = await fetch(SCRIPT_URL + '?' + data.toString(), {
+                            method: 'GET',
+                            mode: 'cors'
+                        });
+                    }
+                    
                     const result = await response.json();
                     
                     if (result.status === 'success') {
