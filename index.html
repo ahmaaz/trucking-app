@@ -122,8 +122,9 @@ https://script.google.com/macros/s/AKfycbwLSyJCGRTx_E-geExPOonXWeGkhWO-UIV92y1Oc
 
       try {
         const response = await fetch(url, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          redirect: "follow",
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
           body: JSON.stringify({
             action: 'register',
             firstName: firstName,
@@ -151,41 +152,41 @@ https://script.google.com/macros/s/AKfycbwLSyJCGRTx_E-geExPOonXWeGkhWO-UIV92y1Oc
     });
 
     document.getElementById('loginForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      try {
-        const email = document.getElementById('loginEmail').value;
-        const password = document.getElementById('loginPassword').value;
-
-        if (!email.includes('@') || !email.includes('.')) {
-          showAlert('loginAlert', 'Please enter a valid email address', 'danger');
-          return;
-        }
-        if (password.length < 4) {
-          showAlert('loginAlert', 'Password must be at least 4 characters', 'danger');
-          return;
-        }
-        const response = await fetch(url, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            action: 'login',
-            email: email,
-            password: password
-          })
-        });
-        const result = await response.json();
-        if (result.status === 'success') {
-          document.getElementById('welcomeMessage').textContent = `Welcome ${result.firstName}`;
-          document.getElementById('authContainer').style.display = 'none';
-          document.getElementById('welcomeScreen').style.display = 'block';
-          document.getElementById('loginForm').reset();
-        } else {
-          showAlert('loginAlert', result.message || 'Invalid credentials', 'danger');
-        }
-      } catch (error) {
-        showAlert('loginAlert', `Error: ${error.message}. Check console for details.`, 'danger');
-      }
-    });
+  e.preventDefault();
+  try {
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
+    if (!email.includes('@') || !email.includes('.')) {
+      showAlert('loginAlert', 'Please enter a valid email address', 'danger');
+      return;
+    }
+    if (password.length < 4) {
+      showAlert('loginAlert', 'Password must be at least 4 characters', 'danger');
+      return;
+    }
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'login',
+        email: email,
+        password: password
+      })
+    });
+    const result = await response.json();
+    if (result.status === 'success') {
+      document.getElementById('welcomeMessage').textContent = `Welcome ${result.lastName}`;
+      document.getElementById('authContainer').style.display = 'none';
+      document.getElementById('welcomeScreen').style.display = 'block';
+      document.getElementById('loginForm').reset();
+    } else {
+      showAlert('loginAlert', result.message || 'Invalid credentials', 'danger');
+    }
+  } catch (error) {
+    showAlert('loginAlert', `Error: ${error.message}. Check console for details.`, 'danger');
+    console.error('Login error:', error);
+  }
+});
 
     function logout() {
       document.getElementById('welcomeScreen').style.display = 'none';
@@ -196,3 +197,4 @@ https://script.google.com/macros/s/AKfycbwLSyJCGRTx_E-geExPOonXWeGkhWO-UIV92y1Oc
   </script>
 </body>
 </html>
+
