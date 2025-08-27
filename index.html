@@ -96,7 +96,7 @@
         </div>`;
     }
 
-    // Register
+    // Register using JSONP to avoid CORS issues
     document.getElementById('registerForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       
@@ -108,22 +108,11 @@
       const dob       = document.getElementById('dob').value;
       const mobile    = document.getElementById('mobile').value;
 
-      try {
-        const response = await fetch(url, {
-          method: "POST",
-          headers: { "Content-Type": "application/x-www-form-urlencoded" },
-          body: new URLSearchParams({
-            action: "register",
-            firstName, 
-            lastName, 
-            email, 
-            password, 
-            dob, 
-            mobile
-          })
-        });
-        
-        const data = await response.json();
+      // Use JSONP approach similar to login
+      const callbackName = 'jsonp_register_callback_' + Math.round(100000 * Math.random());
+      window[callbackName] = function(data) {
+        delete window[callbackName];
+        document.body.removeChild(script);
 
         if (data.status === 'success') {
           showAlert('Registration successful! Please login with your credentials.', 'success');
@@ -144,10 +133,21 @@
             showAlert('Registration error: ' + (data.message || 'Unknown error'), 'danger');
           }
         }
-      } catch (err) {
-        showAlert('Network error. Please check your connection and try again.', 'danger');
-        console.error('Registration error:', err);
-      }
+      };
+      
+      const script = document.createElement('script');
+      const params = new URLSearchParams({
+        action: 'register',
+        firstName, 
+        lastName, 
+        email, 
+        password, 
+        dob, 
+        mobile,
+        callback: callbackName
+      });
+      script.src = `${url}?${params.toString()}`;
+      document.body.appendChild(script);
     });
 
     // Login
