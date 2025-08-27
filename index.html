@@ -1,204 +1,204 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Driver Auth</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <style>
-    body { background-color: #f8f9fa; }
-    .container { max-width: 6000px; margin-top: 150px; }
-    .tab-content { padding: 20px; border: 1px solid #dee2e6; border-top: none; border-radius: 0 0 0.375rem 0.375rem; }
-    #welcomeScreen { display: none; text-align: center; }
-    h1 { text-align: center; margin-bottom: 20px; }
-    .alert { margin-bottom: 20px; display: none; }
-    .form-label { font-size: 1.2rem; font-weight: bold; }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Driver Auth</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body { background-color: #f8f9fa; }
+    .container { max-width: 600px; margin-top: 50px; }
+    .tab-content { padding: 20px; border: 1px solid #dee2e6; border-top: none; border-radius: 0 0 0.375rem 0.375rem; }
+    #welcomeScreen { display: none; text-align: center; }
+    h1 { text-align: center; margin-bottom: 20px; }
+    .alert { margin-bottom: 20px; display: none; }
+    .form-label { font-size: 1.2rem; font-weight: bold; }
+  </style>
 </head>
 <body>
-  <div class="container" id="authContainer">
-    <ul class="nav nav-tabs" id="authTab" role="tablist">
-      <li class="nav-item" role="presentation">
-        <button class="nav-link active" id="login-tab" data-bs-toggle="tab" data-bs-target="#login" type="button" role="tab">Login</button>
-      </li>
-      <li class="nav-item" role="presentation">
-        <button class="nav-link" id="register-tab" data-bs-toggle="tab" data-bs-target="#register" type="button" role="tab">Register</button>
-      </li>
-    </ul>
-    <div class="tab-content bg-white">
-      <div class="tab-pane fade show active" id="login" role="tabpanel">
-        <h1>Welcome To My Truck Life</h1>
-        <div id="loginAlert" class="alert" role="alert"></div>
-        <form id="loginForm">
-          <div class="mb-3">
-            <label for="loginEmail" class="form-label">Email</label>
-            <input type="email" class="form-control" id="loginEmail" required>
-          </div>
-          <div class="mb-3">
-            <label for="loginPassword" class="form-label">Password</label>
-            <input type="password" class="form-control" id="loginPassword" required>
-          </div>
-          <button type="submit" class="btn btn-primary w-100">Login</button>
-        </form>
-      </div>
-      <div class="tab-pane fade" id="register" role="tabpanel">
-        <h1>Register</h1>
-        <div id="registerAlert" class="alert" role="alert"></div>
-        <form id="registerForm">
-          <input type="hidden" name="action" value="register">
-          <div class="mb-3">
-            <label for="firstName" class="form-label">First Name</label>
-            <input type="text" class="form-control" id="firstName" name="firstName" required>
-          </div>
-          <div class="mb-3">
-            <label for="lastName" class="form-label">Last Name</label>
-            <input type="text" class="form-control" id="lastName" name="lastName" required>
-          </div>
-          <div class="mb-3">
-            <label for="dateOfBirth" class="form-label">Date of Birth</label>
-            <input type="date" class="form-control" id="dateOfBirth" name="dateOfBirth" required>
-          </div>
-          <div class="mb-3">
-            <label for="mobileNumber" class="form-label">Mobile Number</label>
-            <input type="tel" class="form-control" id="mobileNumber" name="mobileNumber" required>
-          </div>
-          <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
-            <input type="email" class="form-control" id="email" name="email" required>
-          </div>
-          <div class="mb-3">
-            <label for="password" class="form-label">Password</label>
-            <input type="password" class="form-control" id="password" name="password" required>
-          </div>
-          <button type="submit" class="btn btn-primary w-100">Register</button>
-        </form>
-      </div>
-    </div>
-  </div>
-  <div class="container" id="welcomeScreen">
-    <h2 id="welcomeMessage"></h2>
-    <button class="btn btn-secondary" onclick="logout()">Logout</button>
-  </div>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script>
-    const url = '
-https://script.google.com/macros/s/AKfycbwLSyJCGRTx_E-geExPOonXWeGkhWO-UIV92y1Ocftn_0xrpOWOi4mxNl6ecxdPhekmhw/exec';
-function showAlert(elementId, message, type) {
-  const alert = document.getElementById(elementId);
-  alert.textContent = message;
-  alert.className = `alert alert-${type}`;
-  alert.style.display = 'block';
-  setTimeout(() => {
-    alert.style.display = 'none';
-  }, 5000);
-}
+  <div class="container" id="authContainer">
+    <ul class="nav nav-tabs" id="authTab" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="login-tab" data-bs-toggle="tab" data-bs-target="#login" type="button" role="tab">Login</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="register-tab" data-bs-toggle="tab" data-bs-target="#register" type="button" role="tab">Register</button>
+      </li>
+    </ul>
+    <div class="tab-content bg-white">
+      <div class="tab-pane fade show active" id="login" role="tabpanel">
+        <h1>Welcome To My Truck Life</h1>
+        <div id="loginAlert" class="alert" role="alert"></div>
+        <form id="loginForm">
+          <div class="mb-3">
+            <label for="loginEmail" class="form-label">Email</label>
+            <input type="email" class="form-control" id="loginEmail" required>
+          </div>
+          <div class="mb-3">
+            <label for="loginPassword" class="form-label">Password</label>
+            <input type="password" class="form-control" id="loginPassword" required>
+          </div>
+          <button type="submit" class="btn btn-primary w-100">Login</button>
+        </form>
+      </div>
+      <div class="tab-pane fade" id="register" role="tabpanel">
+        <h1>Register</h1>
+        <div id="registerAlert" class="alert" role="alert"></div>
+        <form id="registerForm">
+          <div class="mb-3">
+            <label for="firstName" class="form-label">First Name</label>
+            <input type="text" class="form-control" id="firstName" name="firstName" required>
+          </div>
+          <div class="mb-3">
+            <label for="lastName" class="form-label">Last Name</label>
+            <input type="text" class="form-control" id="lastName" name="lastName" required>
+          </div>
+          <div class="mb-3">
+            <label for="dateOfBirth" class="form-label">Date of Birth</label>
+            <input type="date" class="form-control" id="dateOfBirth" name="dateOfBirth" required>
+          </div>
+          <div class="mb-3">
+            <label for="mobileNumber" class="form-label">Mobile Number</label>
+            <input type="tel" class="form-control" id="mobileNumber" name="mobileNumber" required>
+          </div>
+          <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" name="email" required>
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password" name="password" required>
+          </div>
+          <button type="submit" class="btn btn-primary w-100">Register</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="container" id="welcomeScreen">
+    <h2 id="welcomeMessage"></h2>
+    <button class="btn btn-secondary" onclick="logout()">Logout</button>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const url = 'https://script.google.com/macros/s/AKfycbwLSyJCGRTx_E-geExPOonXWeGkhWO-UIV92y1Ocftn_0xrpOWOi4mxNl6ecxdPhekmhw/exec'; // Replace with your Google Apps Script web app URL
 
-document.getElementById('registerForm').addEventListener('submit', async (e) => {
-  e.preventDefault(); // Prevent default form submission
-  const firstName = document.getElementById('firstName').value;
-  const lastName = document.getElementById('lastName').value;
-  const dateOfBirth = document.getElementById('dateOfBirth').value;
-  const mobileNumber = document.getElementById('mobileNumber').value;
-  const email = document.getElementById('email').value;
-  const password = document.getElementById('password').value;
-
-  // Client-side validation
-  if (!email.includes('@') || !email.includes('.')) {
-    showAlert('registerAlert', 'Please enter a valid email address', 'danger');
-    return;
-  }
-  if (password.length < 4) {
-    showAlert('registerAlert', 'Password must be at least 4 characters', 'danger');
-    return;
-  }
-  if (!dateOfBirth) {
-    showAlert('registerAlert', 'Please enter your date of birth', 'danger');
-    return;
-  }
-  if (!mobileNumber || !/^\d{10}$/.test(mobileNumber)) {
-    showAlert('registerAlert', 'Please enter a valid 10-digit mobile number', 'danger');
-    return;
-  }
-
-  try {
-    console.log('Sending registration request:', { firstName, lastName, dateOfBirth, mobileNumber, email, password });
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        action: 'register',
-        firstName,
-        lastName,
-        dateOfBirth,
-        mobileNumber,
-        email,
-        password
-      })
-    });
-    const result = await response.json();
-    console.log('Registration response:', result);
-    if (result.status === 'success') {
-      showAlert('registerAlert', result.message || 'Registration successful! Redirecting to login...', 'success');
+    function showAlert(elementId, message, type) {
+      const alert = document.getElementById(elementId);
+      alert.textContent = message;
+      alert.className = `alert alert-${type}`;
+      alert.style.display = 'block';
       setTimeout(() => {
-        const loginTab = new bootstrap.Tab(document.getElementById('login-tab'));
-        loginTab.show();
-        document.getElementById('registerForm').reset();
-      }, 2000);
-    } else {
-      showAlert('registerAlert', result.message || 'Registration failed', 'danger');
+        alert.style.display = 'none';
+      }, 5000);
     }
-  } catch (error) {
-    console.error('Registration error:', error);
-    showAlert('registerAlert', `Error: ${error.message}. Check console for details.`, 'danger');
-  }
-});
 
-document.getElementById('loginForm').addEventListener('submit', async (e) => {
-  e.preventDefault(); // Prevent default form submission
-  try {
-    const email = document.getElementById('loginEmail').value;
-    const password = document.getElementById('loginPassword').value;
-    if (!email.includes('@') || !email.includes('.')) {
-      showAlert('loginAlert', 'Please enter a valid email address', 'danger');
-      return;
-    }
-    if (password.length < 4) {
-      showAlert('loginAlert', 'Password must be at least 4 characters', 'danger');
-      return;
-    }
-    console.log('Sending login request:', { email, password });
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        action: 'login',
-        email,
-        password
-      })
+    document.getElementById('registerForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const firstName = document.getElementById('firstName').value.trim();
+      const lastName = document.getElementById('lastName').value.trim();
+      const dateOfBirth = document.getElementById('dateOfBirth').value;
+      const mobileNumber = document.getElementById('mobileNumber').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      // Client-side validation
+      if (!email.includes('@') || !email.includes('.')) {
+        showAlert('registerAlert', 'Please enter a valid email address', 'danger');
+        return;
+      }
+      if (password.length < 4) {
+        showAlert('registerAlert', 'Password must be at least 4 characters', 'danger');
+        return;
+      }
+      if (!dateOfBirth) {
+        showAlert('registerAlert', 'Please enter your date of birth', 'danger');
+        return;
+      }
+      if (!mobileNumber || !/^\d{10}$/.test(mobileNumber)) {
+        showAlert('registerAlert', 'Please enter a valid 10-digit mobile number', 'danger');
+        return;
+      }
+
+      try {
+        console.log('Sending registration request:', { action: 'register', firstName, lastName, dateOfBirth, mobileNumber, email, password });
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'register',
+            firstName,
+            lastName,
+            dateOfBirth,
+            mobileNumber,
+            email,
+            password
+          })
+        });
+        const result = await response.json();
+        console.log('Registration response:', result);
+        if (result.status === 'success') {
+          showAlert('registerAlert', result.message || 'Registration successful! Redirecting to login...', 'success');
+          setTimeout(() => {
+            const loginTab = new bootstrap.Tab(document.getElementById('login-tab'));
+            loginTab.show();
+            document.getElementById('registerForm').reset();
+          }, 2000);
+        } else {
+          showAlert('registerAlert', result.message || 'Registration failed', 'danger');
+        }
+      } catch (error) {
+        console.error('Registration error:', error);
+        showAlert('registerAlert', `Error: ${error.message}. Check console for details.`, 'danger');
+      }
     });
-    const result = await response.json();
-    console.log('Login response:', result);
-    if (result.status === 'success') {
-      document.getElementById('welcomeMessage').textContent = `Welcome ${result.lastName}`;
-      document.getElementById('authContainer').style.display = 'none';
-      document.getElementById('welcomeScreen').style.display = 'block';
-      document.getElementById('loginForm').reset();
-    } else {
-      showAlert('loginAlert', result.message || 'Invalid credentials', 'danger');
+
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value.trim();
+
+      if (!email.includes('@') || !email.includes('.')) {
+        showAlert('loginAlert', 'Please enter a valid email address', 'danger');
+        return;
+      }
+      if (password.length < 4) {
+        showAlert('loginAlert', 'Password must be at least 4 characters', 'danger');
+        return;
+      }
+
+      try {
+        console.log('Sending login request:', { action: 'login', email, password });
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'login',
+            email,
+            password
+          })
+        });
+        const result = await response.json();
+        console.log('Login response:', result);
+        if (result.status === 'success') {
+          document.getElementById('welcomeMessage').textContent = `Welcome ${result.userName}`;
+          document.getElementById('authContainer').style.display = 'none';
+          document.getElementById('welcomeScreen').style.display = 'block';
+          document.getElementById('loginForm').reset();
+        } else {
+          showAlert('loginAlert', result.message || 'Invalid credentials', 'danger');
+        }
+      } catch (error) {
+        console.error('Login error:', error);
+        showAlert('loginAlert', `Error: ${error.message}. Check console for details.`, 'danger');
+      }
+    });
+
+    function logout() {
+      document.getElementById('welcomeScreen').style.display = 'none';
+      document.getElementById('authContainer').style.display = 'block';
+      const loginTab = new bootstrap.Tab(document.getElementById('login-tab'));
+      loginTab.show();
     }
-  } catch (error) {
-    console.error('Login error:', error);
-    showAlert('loginAlert', `Error: ${error.message}. Check console for details.`, 'danger');
-  }
-});
-
-function logout() {
-  document.getElementById('welcomeScreen').style.display = 'none';
-  document.getElementById('authContainer').style.display = 'block';
-  const loginTab = new bootstrap.Tab(document.getElementById('login-tab'));
-  loginTab.show();
-}
-
-
-
-
+  </script>
+</body>
+</html>
