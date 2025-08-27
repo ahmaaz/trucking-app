@@ -1,200 +1,276 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Driver Auth</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <style>
-    body { background-color: #f8f9fa; }
-    .container { max-width: 6000px; margin-top: 150px; }
-    .tab-content { padding: 20px; border: 1px solid #dee2e6; border-top: none; border-radius: 0 0 0.375rem 0.375rem; }
-    #welcomeScreen { display: none; text-align: center; }
-    h1 { text-align: center; margin-bottom: 20px; }
-    .alert { margin-bottom: 20px; display: none; }
-    .form-label { font-size: 1.2rem; font-weight: bold; }
-  </style>
-</head>
-<body>
-  <div class="container" id="authContainer">
-    <ul class="nav nav-tabs" id="authTab" role="tablist">
-      <li class="nav-item" role="presentation">
-        <button class="nav-link active" id="login-tab" data-bs-toggle="tab" data-bs-target="#login" type="button" role="tab">Login</button>
-      </li>
-      <li class="nav-item" role="presentation">
-        <button class="nav-link" id="register-tab" data-bs-toggle="tab" data-bs-target="#register" type="button" role="tab">Register</button>
-      </li>
-    </ul>
-    <div class="tab-content bg-white">
-      <div class="tab-pane fade show active" id="login" role="tabpanel">
-        <h1>Welcome To My Truck Life</h1>
-        <div id="loginAlert" class="alert" role="alert"></div>
-        <form id="loginForm">
-          <div class="mb-3">
-            <label for="loginEmail" class="form-label">Email</label>
-            <input type="email" class="form-control" id="loginEmail" required>
-          </div>
-          <div class="mb-3">
-            <label for="loginPassword" class="form-label">Password</label>
-            <input type="password" class="form-control" id="loginPassword" required>
-          </div>
-          <button type="submit" class="btn btn-primary w-100">Login</button>
-        </form>
-      </div>
-      <div class="tab-pane fade" id="register" role="tabpanel">
-        <h1>Register</h1>
-        <div id="registerAlert" class="alert" role="alert"></div>
-        <form id="registerForm">
-          <input type="hidden" name="action" value="register">
-          <div class="mb-3">
-            <label for="firstName" class="form-label">First Name</label>
-            <input type="text" class="form-control" id="firstName" name="firstName" required>
-          </div>
-          <div class="mb-3">
-            <label for="lastName" class="form-label">Last Name</label>
-            <input type="text" class="form-control" id="lastName" name="lastName" required>
-          </div>
-          <div class="mb-3">
-            <label for="dateOfBirth" class="form-label">Date of Birth</label>
-            <input type="date" class="form-control" id="dateOfBirth" name="dateOfBirth" required>
-          </div>
-          <div class="mb-3">
-            <label for="mobileNumber" class="form-label">Mobile Number</label>
-            <input type="tel" class="form-control" id="mobileNumber" name="mobileNumber" required>
-          </div>
-          <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
-            <input type="email" class="form-control" id="email" name="email" required>
-          </div>
-          <div class="mb-3">
-            <label for="password" class="form-label">Password</label>
-            <input type="password" class="form-control" id="password" name="password" required>
-          </div>
-          <button type="submit" class="btn btn-primary w-100">Register</button>
-        </form>
-      </div>
-    </div>
-  </div>
-  <div class="container" id="welcomeScreen">
-    <h2 id="welcomeMessage"></h2>
-    <button class="btn btn-secondary" onclick="logout()">Logout</button>
-  </div>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script>
-    const url = '
-https://script.google.com/macros/s/AKfycbwLSyJCGRTx_E-geExPOonXWeGkhWO-UIV92y1Ocftn_0xrpOWOi4mxNl6ecxdPhekmhw/exec';
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Driver Registration & Login</title>
+    <!-- Tailwind CSS CDN for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+      body {
+        font-family: "Inter", sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+    <!-- Main Container -->
+    <div class="bg-white p-8 rounded-2xl shadow-xl max-w-lg w-full">
+      <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">
+        Driver Access Portal
+      </h1>
 
-    function showAlert(elementId, message, type) {
-      const alert = document.getElementById(elementId);
-      alert.textContent = message;
-      alert.className = `alert alert-${type}`;
-      alert.style.display = 'block';
-      setTimeout(() => {
-        alert.style.display = 'none';
-      }, 5000);
-    }
+      <!-- Tab Navigation for Forms -->
+      <div class="flex border-b border-gray-200 mb-6">
+        <button
+          id="tab-register"
+          class="flex-1 py-3 text-center text-lg font-medium text-gray-700 border-b-4 border-transparent hover:text-indigo-600 hover:border-indigo-400 focus:outline-none transition-colors duration-200"
+        >
+          Register
+        </button>
+        <button
+          id="tab-login"
+          class="flex-1 py-3 text-center text-lg font-medium text-gray-700 border-b-4 border-transparent hover:text-indigo-600 hover:border-indigo-400 focus:outline-none transition-colors duration-200"
+        >
+          Login
+        </button>
+      </div>
 
-    document.getElementById('registerForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const firstName = document.getElementById('firstName').value;
-      const lastName = document.getElementById('lastName').value;
-      const dateOfBirth = document.getElementById('dateOfBirth').value;
-      const mobileNumber = document.getElementById('mobileNumber').value;
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
+      <!-- Message Display Area -->
+      <div id="message-container" class="mb-4 hidden">
+        <p
+          id="message-text"
+          class="px-4 py-3 rounded-xl text-sm font-medium"
+        ></p>
+      </div>
 
-      if (!email.includes('@') || !email.includes('.')) {
-        showAlert('registerAlert', 'Please enter a valid email address', 'danger');
-        return;
-      }
-      if (password.length < 4) {
-        showAlert('registerAlert', 'Password must be at least 4 characters', 'danger');
-        return;
-      }
-      if (!dateOfBirth) {
-        showAlert('registerAlert', 'Please enter your date of birth', 'danger');
-        return;
-      }
-      if (!mobileNumber || !/^\d{10}$/.test(mobileNumber)) {
-        showAlert('registerAlert', 'Please enter a valid 10-digit mobile number', 'danger');
-        return;
-      }
+      <!-- Registration Form -->
+      <form id="register-form" class="space-y-4">
+        <div>
+          <label for="firstName" class="block text-sm font-medium text-gray-700"
+            >First Name</label
+          >
+          <input
+            type="text"
+            id="firstName"
+            name="firstName"
+            required
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+          />
+        </div>
+        <div>
+          <label for="lastName" class="block text-sm font-medium text-gray-700"
+            >Last Name</label
+          >
+          <input
+            type="text"
+            id="lastName"
+            name="lastName"
+            required
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+          />
+        </div>
+        <div>
+          <label
+            for="dateOfBirth"
+            class="block text-sm font-medium text-gray-700"
+            >Date of Birth</label
+          >
+          <input
+            type="date"
+            id="dateOfBirth"
+            name="dateOfBirth"
+            required
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+          />
+        </div>
+        <div>
+          <label
+            for="mobileNumber"
+            class="block text-sm font-medium text-gray-700"
+            >Mobile Number</label
+          >
+          <input
+            type="tel"
+            id="mobileNumber"
+            name="mobileNumber"
+            required
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+          />
+        </div>
+        <div>
+          <label for="email" class="block text-sm font-medium text-gray-700"
+            >Email</label
+          >
+          <input
+            type="email"
+            id="email"
+            name="email"
+            required
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+          />
+        </div>
+        <div>
+          <label for="password" class="block text-sm font-medium text-gray-700"
+            >Password</label
+          >
+          <input
+            type="password"
+            id="password"
+            name="password"
+            required
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+          />
+        </div>
+        <input type="hidden" name="action" value="register" />
+        <div>
+          <button
+            type="submit"
+            class="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200"
+          >
+            Register
+          </button>
+        </div>
+      </form>
 
-      try {
-        const response = await fetch(url, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            action: 'register',
-            firstName: firstName,
-            lastName: lastName,
-            dateOfBirth: dateOfBirth,
-            mobileNumber: mobileNumber,
-            email: email,
-            password: password
-          })
-        });
-        const result = await response.json();
-        if (result.status === 'success') {
-          showAlert('registerAlert', result.message || 'Registration successful! Redirecting to login...', 'success');
-          setTimeout(() => {
-            const loginTab = new bootstrap.Tab(document.getElementById('login-tab'));
-            loginTab.show();
-            document.getElementById('registerForm').reset();
-          }, 2000);
-        } else {
-          showAlert('registerAlert', result.message || 'Registration failed', 'danger');
-        }
-      } catch (error) {
-        showAlert('registerAlert', `Error: ${error.message}. Check console for details.`, 'danger');
-      }
-    });
+      <!-- Login Form (Initially hidden) -->
+      <form id="login-form" class="space-y-4 hidden">
+        <div>
+          <label
+            for="login-email"
+            class="block text-sm font-medium text-gray-700"
+            >Email</label
+          >
+          <input
+            type="email"
+            id="login-email"
+            name="email"
+            required
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+          />
+        </div>
+        <div>
+          <label
+            for="login-password"
+            class="block text-sm font-medium text-gray-700"
+            >Password</label
+          >
+          <input
+            type="password"
+            id="login-password"
+            name="password"
+            required
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+          />
+        </div>
+        <input type="hidden" name="action" value="login" />
+        <div>
+          <button
+            type="submit"
+            class="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200"
+          >
+            Login
+          </button>
+        </div>
+      </form>
+    </div>
 
-    document.getElementById('loginForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      try {
-        const email = document.getElementById('loginEmail').value;
-        const password = document.getElementById('loginPassword').value;
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const SCRIPT_URL = "
+https://script.google.com/macros/s/AKfycbwLSyJCGRTx_E-geExPOonXWeGkhWO-UIV92y1Ocftn_0xrpOWOi4mxNl6ecxdPhekmhw/exec"; // <-- PASTE YOUR SCRIPT URL HERE
 
-        if (!email.includes('@') || !email.includes('.')) {
-          showAlert('loginAlert', 'Please enter a valid email address', 'danger');
-          return;
-        }
-        if (password.length < 4) {
-          showAlert('loginAlert', 'Password must be at least 4 characters', 'danger');
-          return;
-        }
-        const response = await fetch(url, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            action: 'login',
-            email: email,
-            password: password
-          })
-        });
-        const result = await response.json();
-        if (result.status === 'success') {
-          document.getElementById('welcomeMessage').textContent = `Welcome ${result.firstName}`;
-          document.getElementById('authContainer').style.display = 'none';
-          document.getElementById('welcomeScreen').style.display = 'block';
-          document.getElementById('loginForm').reset();
-        } else {
-          showAlert('loginAlert', result.message || 'Invalid credentials', 'danger');
-        }
-      } catch (error) {
-        showAlert('loginAlert', `Error: ${error.message}. Check console for details.`, 'danger');
-      }
-    });
+        const registerForm = document.getElementById("register-form");
+        const loginForm = document.getElementById("login-form");
+        const messageContainer = document.getElementById("message-container");
+        const messageText = document.getElementById("message-text");
+        const tabRegister = document.getElementById("tab-register");
+        const tabLogin = document.getElementById("tab-login");
 
-    function logout() {
-      document.getElementById('welcomeScreen').style.display = 'none';
-      document.getElementById('authContainer').style.display = 'block';
-      const loginTab = new bootstrap.Tab(document.getElementById('login-tab'));
-      loginTab.show();
-    }
-  </script>
-</body>
+        // Set initial active tab state
+        tabRegister.classList.add("border-indigo-500", "text-indigo-600");
+
+        // Handles tab switching
+        function switchTab(activeTab) {
+          if (activeTab === "register") {
+            registerForm.classList.remove("hidden");
+            loginForm.classList.add("hidden");
+            tabRegister.classList.add("border-indigo-500", "text-indigo-600");
+            tabLogin.classList.remove("border-indigo-500", "text-indigo-600");
+          } else {
+            loginForm.classList.remove("hidden");
+            registerForm.classList.add("hidden");
+            tabLogin.classList.add("border-indigo-500", "text-indigo-600");
+            tabRegister.classList.remove(
+              "border-indigo-500",
+              "text-indigo-600"
+            );
+          }
+        }
+
+        tabRegister.addEventListener("click", () => switchTab("register"));
+        tabLogin.addEventListener("click", () => switchTab("login"));
+
+        // Generic function to display messages
+        function showMessage(message, type) {
+          messageText.textContent = message;
+          messageContainer.classList.remove(
+            "hidden",
+            "bg-red-100",
+            "text-red-700",
+            "bg-green-100",
+            "text-green-700"
+          );
+          if (type === "success") {
+            messageContainer.classList.add("bg-green-100", "text-green-700");
+          } else {
+            messageContainer.classList.add("bg-red-100", "text-red-700");
+          }
+        }
+
+        // Function to handle form submission via fetch
+        async function handleSubmit(event, formType) {
+          event.preventDefault(); // Prevent the default form submission (page reload)
+
+          const form = event.target;
+          const formData = new FormData(form);
+          const data = new URLSearchParams(formData);
+
+          try {
+            const response = await fetch(SCRIPT_URL + "?" + data.toString(), {
+              method: formType === "register" ? "POST" : "GET",
+              mode: "cors",
+            });
+            const result = await response.json();
+
+            if (result.status === "success") {
+              showMessage(result.message || "Success!", "success");
+              form.reset(); // Clear the form on success
+            } else {
+              showMessage(
+                result.message || "An unknown error occurred.",
+                "error"
+              );
+            }
+          } catch (error) {
+            console.error("Fetch error:", error);
+            showMessage(
+              "Could not connect to the server. Please try again.",
+              "error"
+            );
+          }
+        }
+
+        // Event listeners for form submissions
+        registerForm.addEventListener("submit", (event) =>
+          handleSubmit(event, "register")
+        );
+        loginForm.addEventListener("submit", (event) =>
+          handleSubmit(event, "login")
+        );
+      });
+    </script>
+  </body>
 </html>
-
-
