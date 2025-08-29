@@ -62,27 +62,28 @@
         <form>
 
 <label for="note">Note for Harpreet</label>
-            <input type="text" id="load-details" value="This is only the beginning of the web app.<br>
-It will require a lot more work and ongoing maintenance, and I can’t promise how far I will be able to take it — but I will keep giving it a go.<br><br>
+            <textarea id="load-details" readonly rows="15" style="width:100%;">
+This is only the beginning of the web app.
+It will require a lot more work and ongoing maintenance, and I can’t promise how far I will be able to take it — but I will keep giving it a go.
 
-From my current understanding, the purpose is to create an app where drivers can submit their trip details and have that information stored automatically in a Google Spreadsheet. (Please confirm if this is correct.)<br><br>
+From my current understanding, the purpose is to create an app where drivers can submit their trip details and have that information stored automatically in a Google Spreadsheet. (Please confirm if this is correct.)
 
-To make real progress, I need much clearer requirements in plain English — specifically:<br>
-- What daily inputs are required from the driver?<br>
-- What exactly should be stored in the spreadsheet?<br>
-- What do you expect the driver to see after logging in?<br><br>
+To make real progress, I need much clearer requirements in plain English — specifically:
+- What daily inputs are required from the driver?
+- What exactly should be stored in the spreadsheet?
+- What do you expect the driver to see after logging in?
 
-<strong>Example of the type of requirements I need</strong><br><br>
+Example of the type of requirements I need:
 
-When a driver registers through the Harpreet Login & Signup system<br>
-Then they should be able to see their assigned load details.<br><br>
+When a driver registers through the Harpreet Login & Signup system
+Then they should be able to see their assigned load details.
 
-When a driver departs from Sydney<br>
-Then they should record their departure time (and any other required details, e.g., load condition, fuel level).<br><br>
+When a driver departs from Sydney
+Then they should record their departure time (and any other required details, e.g., load condition, fuel level).
 
-When a driver arrives at their destination in Brisbane<br>
-Then they should log their arrival time and confirm delivery status.<br>
-" readonly>
+When a driver arrives at their destination in Brisbane
+Then they should log their arrival time and confirm delivery status.
+</textarea>
             
             <label for="load-details">Load Details</label>
             <input type="text" id="load-details" value="From Sydney to Brisbane" readonly>
@@ -107,6 +108,7 @@ Then they should log their arrival time and confirm delivery status.<br>
     </div>
 </body>
 </html>
+
 
 
 
